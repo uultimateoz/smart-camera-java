@@ -1,0 +1,19 @@
+# Maven
+target/
+
+# Java Crash Logs
+*.log
+hs_err_pid*
+replay_pid*
+
+# NetBeans
+nbproject/
+build/
+build.xml
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
