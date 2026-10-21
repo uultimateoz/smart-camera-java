@@ -30,6 +30,7 @@ public class AuthResource {
         
         String hashed = Auth.hashPassword(password);
         userDAO.insertUser(email, hashed, "resident");
+        
         mockPin = String.format("%04d", new Random().nextInt(10000));
         System.out.println("\nMOCK SMS SENT TO PHONE");
         System.out.println("\nYour Login PIN is: " + mockPin);

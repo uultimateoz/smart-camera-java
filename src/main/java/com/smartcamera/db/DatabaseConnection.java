@@ -1,3 +1,4 @@
+package com.smartcamera.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
