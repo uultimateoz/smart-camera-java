@@ -1,23 +1,25 @@
 package com.smartcamera.db;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import com.smartcamera.repository.EventRepository;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDateTime;
 
+@Service
 public class RetentionService {
 
-    public int deleteExpiredEvents() throws SQLException {
+    private final EventRepository eventRepository;
 
-        String sql = """
-            DELETE FROM events
-            WHERE capture_time < NOW() - INTERVAL 30 DAY
-            """;
+    public RetentionService(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
 
-        try ( Connection connection
-                = DatabaseConnection.getConnection();  PreparedStatement statement
-                = connection.prepareStatement(sql)) {
-
-            return statement.executeUpdate();
-        }
+    @Scheduled(cron = "0 0 2 * * *") 
+    @Transactional
+    public void deleteExpiredEvents() {
+        LocalDateTime cutoff = LocalDateTime.now().minusDays(30);
+        int deletedCount = eventRepository.deleteExpiredEvents(cutoff);
+        System.out.println("Expired events deleted: " + deletedCount);
     }
 }

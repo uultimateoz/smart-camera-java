@@ -1,5 +1,6 @@
-package com.smartcamera.db;
+package com.smartcamera.repository;
 
+import com.smartcamera.model.LogEntry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 

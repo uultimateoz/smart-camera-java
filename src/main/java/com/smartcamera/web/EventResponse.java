@@ -1,5 +1,6 @@
+package com.smartcamera.web;
 
-import com.smarthome.camera.model.Event;
+import com.smartcamera.model.Event;
 import java.time.LocalDateTime;
 
 public record EventResponse(

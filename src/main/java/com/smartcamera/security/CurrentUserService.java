@@ -1,6 +1,7 @@
+package com.smartcamera.security;
 
-import com.smarthome.camera.model.User;
-import com.smarthome.camera.repository.UserRepository;
+import com.smartcamera.model.User;
+import com.smartcamera.repository.UserRepository; // Updated package
 import org.springframework.security.core.Authentication;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -15,13 +16,15 @@ public class CurrentUserService {
     }
 
     public User requireCurrentUser(Authentication auth) {
-        if (auth == null || !auth.isAuthenticated()
-                || "anonymousUser".equals(auth.getPrincipal())) {
-            throw new AccessDeniedException("Authentication required");
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new AccessDeniedException("Access denied");
         }
 
-        return users.findByEmail(auth.getName())
-                .orElseThrow(() ->
-                        new AccessDeniedException("Access denied"));
+        try {
+            Integer userId = Integer.valueOf(auth.getName());
+            return users.findById(userId).orElseThrow(() -> new AccessDeniedException("Access denied"));
+        } catch (NumberFormatException e) {
+            throw new AccessDeniedException("Access denied");
+        }
     }
 }

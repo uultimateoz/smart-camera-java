@@ -55,6 +55,21 @@ public class UserDAO {
 
         return null;
     }
+    
+    public void insertUser(String email, String passwordHash, String role) throws SQLException {
+        String sql = "INSERT INTO users (email, password_hasd, failed_attempts) "
+                     +"VALUES (?, ?, ?, 0)";
+        
+        try (Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            
+            statement.setString(1, email);
+            statement.setString(2, passwordHash);
+            statement.setString(3, role); 
+            
+            statement.executeUpdate();
+        }
+    }
 
     public void updateFailedAttempts(
             int userId,
